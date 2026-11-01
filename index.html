@@ -39,6 +39,7 @@
   ::-webkit-scrollbar-track{background:var(--bg)}
   ::-webkit-scrollbar-thumb{background:var(--darkgreen);border-radius:6px;border:2px solid var(--bg)}
   a{color:var(--lime)}
+  button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
   /* ================= LOADER ================= */
   #loader{
@@ -355,25 +356,29 @@
     80%{transform:translate(8px,-4px)}
   }
   .boom-toast{
-    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+    position:fixed;top:96px;left:50%;transform:translate(-50%,0) scale(0);
     z-index:9600;font-family:'Russo One',sans-serif;font-size:clamp(22px,6vw,44px);
     color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.8);text-align:center;
     transition:transform .25s cubic-bezier(.2,1.6,.4,1);pointer-events:none;white-space:nowrap;
   }
-  .boom-toast.show{transform:translate(-50%,-50%) scale(1)}
+  .boom-toast.show{transform:translate(-50%,0) scale(1)}
 
-  /* ================= TOASTS ================= */
-  #toasts{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9700;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:max-content;max-width:92vw}
+  /* ================= TOASTS (правый верхний угол, лимит 5) ================= */
+  #toasts{
+    position:fixed;top:76px;right:16px;z-index:9700;
+    display:flex;flex-direction:column;gap:8px;align-items:flex-end;
+    pointer-events:none;
+  }
   .toast{
     background:var(--panel2);border:1px solid var(--lime);color:var(--cream);
-    border-radius:12px;padding:11px 20px;font-size:14px;font-weight:600;
+    border-radius:12px;padding:10px 16px;font-size:13.5px;font-weight:600;
     box-shadow:0 10px 30px rgba(0,0,0,.5);
     animation:toastin .3s cubic-bezier(.2,1.4,.4,1);
-    max-width:92vw;text-align:center;
+    max-width:min(340px,78vw);text-align:left;
   }
   .toast.out{animation:toastout .3s forwards}
-  @keyframes toastin{from{opacity:0;transform:translateY(20px) scale(.8)}to{opacity:1;transform:none}}
-  @keyframes toastout{to{opacity:0;transform:translateY(14px) scale(.9)}}
+  @keyframes toastin{from{opacity:0;transform:translateX(46px) scale(.92)}to{opacity:1;transform:none}}
+  @keyframes toastout{to{opacity:0;transform:translateX(30px) scale(.94)}}
 
   /* ================= КУРИЦА ИЗ CS2 ================= */
   .cs-chicken{
@@ -422,13 +427,16 @@
     font-size:12px;font-weight:600;letter-spacing:.5px;cursor:pointer;flex-shrink:0;
     background:var(--panel2);border:1px solid var(--border);color:var(--muted);
     border-radius:999px;padding:8px 13px;transition:all .2s;font-family:inherit;
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;white-space:nowrap;
   }
+  .sound-toggle .s-ico{display:inline-block;width:17px;text-align:center}
   .sound-toggle:hover{color:var(--lime);border-color:var(--darkgreen)}
   .sound-toggle.on{color:var(--lime);border-color:var(--lime)}
   .burger{
     display:none;flex-direction:column;justify-content:center;gap:5px;
     width:44px;height:44px;padding:10px;flex-shrink:0;
     background:var(--panel2);border:1px solid var(--border);border-radius:10px;cursor:pointer;
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;
   }
   .burger span{display:block;height:3px;border-radius:2px;background:var(--lime);transition:transform .3s,opacity .3s}
   .burger span:nth-child(2){background:var(--red)}
@@ -500,8 +508,67 @@
     nav .links.open a:nth-child(8){animation-delay:.35s}
     nav .links.open a:nth-child(9){animation-delay:.4s}
     nav .links.open a:nth-child(10){animation-delay:.45s}
+    nav .links.open a:nth-child(11){animation-delay:.5s}
   }
   @keyframes linkin{to{opacity:1;transform:none}}
+
+  /* ================= АРКАДА ================= */
+  .clicker-box{max-width:760px;margin:0 auto 26px;background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:28px 24px;text-align:center}
+  .clicker-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:baseline;margin-bottom:14px}
+  .clicker-count{font-family:'Russo One',sans-serif;font-size:22px;color:var(--lime)}
+  .clicker-rates{font-size:13px;color:var(--muted)}
+  .clicker-rates b{color:var(--cream)}
+  #click-melon{
+    width:150px;height:150px;border-radius:50%;border:2px solid var(--darkgreen);cursor:pointer;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.35), transparent 42%), var(--rind-stripes);
+    box-shadow:0 14px 36px rgba(0,0,0,.5), inset -10px -14px 26px rgba(0,0,0,.35);
+    transition:transform .08s;touch-action:manipulation;margin:4px auto;display:block;
+    animation:avabob 3s ease-in-out infinite;
+  }
+  #click-melon:hover{transform:scale(1.05)}
+  #click-melon:active{transform:scale(.88)}
+  .clicker-hint{font-size:12px;color:var(--muted);font-style:italic;margin-top:8px}
+  .upgrades{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:18px}
+  .upg{
+    text-align:left;background:var(--panel2);border:1px solid var(--border);border-radius:14px;
+    padding:12px 14px;cursor:pointer;transition:all .18s;font-family:inherit;color:var(--cream);
+    touch-action:manipulation;
+  }
+  .upg:hover:not(:disabled){border-color:var(--lime);transform:translateY(-2px)}
+  .upg:disabled{opacity:.45;cursor:not-allowed}
+  .upg .u-name{font-weight:600;font-size:14px}
+  .upg .u-name .lvl{opacity:.55;font-weight:400;font-size:12px}
+  .upg .u-desc{font-size:12px;color:var(--muted);margin:2px 0 6px}
+  .upg .u-meta{font-size:12.5px;color:var(--lime);font-weight:600}
+  .clicker-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .lb{font-size:12px;color:var(--muted)}
+  #arbz-reset{font-size:11px;padding:7px 12px}
+  .arbz-fly{
+    position:fixed;z-index:9200;pointer-events:none;font-weight:900;color:var(--lime);
+    text-shadow:0 2px 8px rgba(0,0,0,.6);font-size:18px;
+  }
+  .arcade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;max-width:1080px;margin:0 auto}
+  .arcade-card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:22px}
+  .arcade-card h3{font-family:'Russo One',sans-serif;font-size:15px;letter-spacing:.5px;margin-bottom:6px}
+  .a-desc{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .oracle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .oracle-input{
+    flex:1;min-width:140px;background:var(--panel2);border:1px solid var(--border);
+    border-radius:10px;padding:10px 12px;color:var(--cream);font-family:inherit;font-size:14px;
+  }
+  .oracle-stage{display:flex;align-items:center;gap:12px;min-height:64px}
+  .oracle-melon{font-size:44px;display:inline-block;flex-shrink:0}
+  .oracle-melon.shakeit{animation:oracleshake .6s ease-in-out}
+  @keyframes oracleshake{0%,100%{transform:rotate(0)}20%{transform:rotate(-24deg) translateY(-4px)}40%{transform:rotate(20deg)}60%{transform:rotate(-14deg)}80%{transform:rotate(10deg)}}
+  .oracle-answer{font-size:14.5px;font-weight:600;color:var(--lime)}
+  .gen-out{min-height:58px;display:flex;align-items:center;font-size:16px;font-weight:600;margin-bottom:12px;animation:advicepop .4s cubic-bezier(.2,1.4,.4,1)}
+
+  /* читерский режим (Konami) */
+  body.cheater .float-melon{font-size:120px !important;opacity:.45 !important}
+  body.cheater #hero-melon{width:320px;height:320px;transition:width .5s,height .5s}
+  body.cheater #click-melon{width:220px;height:220px;transition:width .5s,height .5s}
+  body.cheater .avatar{width:130px;height:130px;font-size:66px;transition:width .5s,height .5s,font-size .5s}
+  body.cheater .cs-chicken{font-size:70px;transition:font-size .5s}
 
   /* ================= RAINBOW MODE ================= */
   body.rainbow .hue{animation:hue 5s linear infinite}
@@ -542,13 +609,14 @@
     <a href="#stats">Статы</a>
     <a href="#strats">Страты</a>
     <a href="#trophies">Трофеи</a>
+    <a href="#arcade">Аркада</a>
     <a href="#coop">Курятник</a>
     <a href="#chat">Чат</a>
     <a href="#quiz">Тест</a>
     <a href="#sponsors">Спонсоры</a>
     <a href="#join">Вступить</a>
   </div>
-  <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false">🔇 ЗВУК ВЫКЛ</button>
+  <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="false"><span class="s-ico" id="sound-ico" aria-hidden="true">🔇</span> ЗВУК</button>
   <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
 </nav>
 <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
@@ -786,6 +854,55 @@
     </div>
   </section>
 
+  <!-- АРКАДА -->
+  <section id="arcade">
+    <h2 class="sec-title">Аркада <span class="hl">.Арбуз.</span></h2>
+    <p class="sec-sub">официальный тренажёр команды. навыки из аркады в матч не переносятся. к сожалению.</p>
+
+    <div class="clicker-box reveal">
+      <div class="clicker-head">
+        <div class="clicker-count">🍉 <span class="num" id="arbz-count">0</span> арбузков</div>
+        <div class="clicker-rates">за клик: <b id="arbz-click">1</b> · в секунду: <b id="arbz-auto">0</b></div>
+      </div>
+      <button id="click-melon" type="button" aria-label="Жми арбуз — зарабатывай арбузки"></button>
+      <div class="clicker-hint">жми арбуз. зарабатывай арбузки. трать на арбузы. экономика замкнулась. прогресс сохраняется.</div>
+      <div class="upgrades" id="upgrades"></div>
+      <div class="clicker-foot">
+        <span class="lb">📋 доска лидеров: 769 — 999 999 (не обсуждается) · Курица — ∞</span>
+        <button class="btn btn-ghost" id="arbz-reset" type="button">СЪЕСТЬ ВСЁ (СБРОС)</button>
+      </div>
+    </div>
+
+    <div class="arcade-grid">
+      <div class="arcade-card reveal">
+        <h3>🍉 АРБУЗ-ОРАКУЛ</h3>
+        <p class="a-desc">задай вопрос — арбуз знает. арбуз всегда знает.</p>
+        <div class="oracle-row">
+          <input class="oracle-input" id="oracle-input" type="text" maxlength="80" placeholder="спроси о чём-нибудь важном…">
+          <button class="btn btn-ghost" id="oracle-btn" type="button">СПРОСИТЬ</button>
+        </div>
+        <div class="oracle-stage">
+          <span class="oracle-melon" id="oracle-melon" aria-hidden="true">🍉</span>
+          <div class="oracle-answer" id="oracle-answer" aria-live="polite">арбуз молчит и ждёт вопрос…</div>
+        </div>
+      </div>
+
+      <div class="arcade-card reveal">
+        <h3>📣 ГЕНЕРАТОР ПРИЗЫВОВ</h3>
+        <p class="a-desc">дави кнопку и кричи в войс с уверенностью. результат не гарантирован, но звучит красиво.</p>
+        <div class="gen-out" id="call-out">…</div>
+        <button class="btn btn-ghost" id="call-btn" type="button">ДАТЬ УСТАНОВКУ</button>
+      </div>
+
+      <div class="arcade-card reveal">
+        <h3>🏷 ГЕНЕРАТОР НИКА</h3>
+        <p class="a-desc">не знаешь, как назваться в заявке? машина придумает лучше нас всех.</p>
+        <div class="gen-out" id="nick-out">…</div>
+        <button class="btn btn-ghost" id="nick-btn" type="button">ПРИДУМАТЬ НИК</button>
+      </div>
+    </div>
+  </section>
+
   <!-- КУРЯТНИК -->
   <section id="coop">
     <h2 class="sec-title">Курятник <span class="hl">🐔</span></h2>
@@ -954,6 +1071,7 @@
     var t = document.createElement('div');
     t.className = 'toast';
     t.textContent = text;
+    while (toastsBox.children.length >= 5) toastsBox.removeChild(toastsBox.firstChild);
     toastsBox.appendChild(t);
     setTimeout(function(){
       t.classList.add('out');
@@ -1100,7 +1218,10 @@
     c4time.textContent = t;
     c4.classList.toggle('urgent', t <= 10);
   }, 1000);
+  var boomBusy = false;
   function boom(){
+    if (boomBusy) return;
+    boomBusy = true;
     sfx.boom();
     clearInterval(c4Tick);
     c4time.textContent = '0';
@@ -1115,6 +1236,7 @@
       t = 47;
       c4time.textContent = t;
       c4.classList.remove('urgent');
+      boomBusy = false;
       c4Tick = setInterval(function(){
         t--;
         if (t <= 0){ boom(); return; }
@@ -1125,6 +1247,7 @@
     }, 2200);
   }
   function tryDefuse(){
+    if (boomBusy) return;
     if (t <= 5){ boom(); return; }
     t -= 5;
     c4time.textContent = t;
@@ -1334,7 +1457,7 @@
 
   /* ---------- ЗВУК: синтез на WebAudio, без единого файла ---------- */
   var soundOn = false, actx = null;
-  var soundBtn = $('#sound-toggle');
+  var soundBtn = $('#sound-toggle'), soundIco = $('#sound-ico');
   function ensureCtx(){
     if (!actx){
       var AC = window.AudioContext || window.webkitAudioContext;
@@ -1386,7 +1509,7 @@
     soundOn = !soundOn;
     soundBtn.classList.toggle('on', soundOn);
     soundBtn.setAttribute('aria-pressed', String(soundOn));
-    soundBtn.textContent = soundOn ? '🔊 ЗВУК ВКЛ' : '🔇 ЗВУК ВЫКЛ';
+    if (soundIco) soundIco.textContent = soundOn ? '🔊' : '🔇';
     if (soundOn){ ensureCtx(); sfx.pop(); toast('🔊 Звук включён. C4 теперь тикает по-настоящему.'); }
   });
 
@@ -1538,6 +1661,186 @@
     console.log('%c🍉 .АРБУЗ.', 'font-size:30px');
     console.log('%cТы открыл консоль. Это уровень 769 — молча делать магию. Принят в команду.', 'color:#b6ff5e;font-size:14px');
   }catch(e){}
+
+  /* ---------- АРКАДА: АРБУЗ-КЛИКЕР ---------- */
+  var arbz = 0, perClick = 1, autoRate = 0;
+  var upDefs = [
+    { name: '🔪 Куплен нож', desc: '+1 арбузок за клик', base: 10, mult: 1.6, type: 'click', val: 1 },
+    { name: '🐔 Курица-помощница', desc: 'клюёт +1 арбузок/сек', base: 30, mult: 1.7, type: 'auto', val: 1 },
+    { name: '🐌 mikroślimak разогнался', desc: '+7 за клик (всё ещё медленно)', base: 100, mult: 1.8, type: 'click', val: 7 },
+    { name: '🔦 Флешки Ретхена', desc: 'враги слепнут: +15 арбузков/сек', base: 400, mult: 1.9, type: 'auto', val: 15 }
+  ];
+  var upLvl = [0, 0, 0, 0];
+  var arbzCount = $('#arbz-count'), arbzClick = $('#arbz-click'), arbzAuto = $('#arbz-auto'), upgHost = $('#upgrades');
+  function saveArbz(){
+    try{ localStorage.setItem('arbuz-clicker', JSON.stringify({ a: arbz, l: upLvl })); }catch(e){}
+  }
+  function loadArbz(){
+    try{
+      var d = JSON.parse(localStorage.getItem('arbuz-clicker'));
+      if (d && typeof d.a === 'number' && Array.isArray(d.l)) upLvl = d.l.slice(0, upDefs.length);
+      if (d && typeof d.a === 'number') arbz = d.a;
+    }catch(e){}
+  }
+  function costOf(i){ return Math.floor(upDefs[i].base * Math.pow(upDefs[i].mult, upLvl[i])); }
+  function recalcRates(){
+    perClick = 1; autoRate = 0;
+    upDefs.forEach(function(u, i){
+      if (u.type === 'click') perClick += u.val * upLvl[i];
+      else autoRate += u.val * upLvl[i];
+    });
+    arbzClick.textContent = perClick;
+    arbzAuto.textContent = autoRate;
+  }
+  function renderUpg(){
+    if (!upgHost) return;
+    upgHost.innerHTML = '';
+    upDefs.forEach(function(u, i){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'upg';
+      b.innerHTML = '<div class="u-name">' + u.name + ' <span class="lvl">ур.' + upLvl[i] + '</span></div>' +
+        '<div class="u-desc">' + u.desc + '</div>' +
+        '<div class="u-meta">купить: 🍉 ' + fmt(costOf(i)) + '</div>';
+      b.disabled = arbz < costOf(i);
+      b.addEventListener('click', function(){
+        if (arbz < costOf(i)) return;
+        arbz -= costOf(i);
+        upLvl[i]++;
+        tone(660, 0.1, 'triangle', 0.08, 990);
+        toast('Куплено: ' + u.name + ' (ур.' + upLvl[i] + ')');
+        recalcRates(); renderUpg(); updateArbz(); saveArbz();
+      });
+      upgHost.appendChild(b);
+    });
+  }
+  function refreshUpg(){
+    if (!upgHost) return;
+    Array.prototype.forEach.call(upgHost.children, function(b, i){
+      b.disabled = arbz < costOf(i);
+      var meta = b.querySelector('.u-meta');
+      if (meta) meta.textContent = 'купить: 🍉 ' + fmt(costOf(i));
+    });
+  }
+  function updateArbz(){
+    if (arbzCount) arbzCount.textContent = fmt(Math.floor(arbz));
+    refreshUpg();
+  }
+  var clickMelon = $('#click-melon');
+  if (clickMelon) clickMelon.addEventListener('click', function(e){
+    arbz += perClick;
+    updateArbz();
+    tone(520 + Math.random() * 260, 0.05, 'triangle', 0.05);
+    var fly = document.createElement('span');
+    fly.className = 'arbz-fly';
+    fly.textContent = '+' + perClick + ' 🍉';
+    fly.style.left = (e.clientX - 10) + 'px';
+    fly.style.top = (e.clientY - 26) + 'px';
+    document.body.appendChild(fly);
+    if (canAnimate){
+      fly.animate([
+        { transform: 'translateY(0)', opacity: 1 },
+        { transform: 'translateY(-70px)', opacity: 0 }
+      ], { duration: 700, easing: 'ease-out', fill: 'forwards' })
+        .onfinish = function(){ if (fly.parentNode) fly.parentNode.removeChild(fly); };
+    } else {
+      setTimeout(function(){ if (fly.parentNode) fly.parentNode.removeChild(fly); }, 700);
+    }
+  });
+  setInterval(function(){ if (autoRate > 0){ arbz += autoRate; updateArbz(); } }, 1000);
+  setInterval(saveArbz, 5000);
+  var arbzReset = $('#arbz-reset');
+  if (arbzReset) arbzReset.addEventListener('click', function(){
+    arbz = 0; upLvl = [0, 0, 0, 0];
+    recalcRates(); renderUpg(); updateArbz(); saveArbz();
+    toast('Всё съедено. Начинаем с нуля. Как в матче.');
+  });
+  loadArbz(); recalcRates(); renderUpg(); updateArbz();
+  if (arbz > 0) toast('Сохранение загружено: ' + fmt(Math.floor(arbz)) + ' арбузков 🍉');
+
+  /* ---------- АРКАДА: АРБУЗ-ОРАКУЛ ---------- */
+  var oracleAnswers = [
+    'Ко-ко. (это да)',
+    'Раш б — и вопрос закрыт.',
+    'Даже 769 бы сказал «нет». Он бы вообще ничего не сказал, но это нет.',
+    'Съешь арбуз и спроси снова.',
+    'Мой источник — курица с Dust2. Она говорит: 50/50.',
+    'Вероятность 87%. В этой команде всё — 87%.',
+    'Это была твоя флешка. И ответ тоже.',
+    'Знаки говорят: купить AWP. Второй — про запас.',
+    'Бомба тикает, а ты вопросы задаёшь?',
+    'Ответ внутри арбуза. Внутри красное. Думай.',
+    'Только если с тайм-аутом на арбуз.',
+    'GG WP — вопрос исчерпан.'
+  ];
+  var oracleBtn = $('#oracle-btn'), oracleInput = $('#oracle-input');
+  var oracleAnswer = $('#oracle-answer'), oracleMelon = $('#oracle-melon');
+  var oracleBusy = false;
+  function askOracle(){
+    if (oracleBusy) return;
+    oracleBusy = true;
+    if (oracleAnswer) oracleAnswer.textContent = 'арбуз размышляет…';
+    if (oracleMelon) oracleMelon.classList.add('shakeit');
+    var q = oracleInput ? oracleInput.value.trim() : '';
+    setTimeout(function(){
+      if (oracleMelon) oracleMelon.classList.remove('shakeit');
+      var ans = oracleAnswers[Math.floor(Math.random() * oracleAnswers.length)];
+      if (oracleAnswer) oracleAnswer.textContent = q
+        ? '«' + q + '» — ' + ans
+        : ans + ' (вопрос не задан, но арбуз всё понял)';
+      if (oracleInput) oracleInput.value = '';
+      tone(300, 0.15, 'triangle', 0.07, 180);
+      oracleBusy = false;
+    }, 800);
+  }
+  if (oracleBtn) oracleBtn.addEventListener('click', askOracle);
+  if (oracleInput) oracleInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') askOracle(); });
+
+  /* ---------- АРКАДА: ГЕНЕРАТОР ПРИЗЫВОВ ---------- */
+  var callBtn = $('#call-btn'), callOut = $('#call-out');
+  var callA = ['Раш B', 'Фейк A', 'Все на мид', 'Тихий проход через курятник', 'Куриный десант на точку', 'Тайм-аут на арбуз', 'Эко и молимся', 'Флешка через всю карту'];
+  var callB = ['с ножами', 'вслепую', 'по одному, но с уверенностью', 'задом наперёд', 'с криком «за арбуз!»', 'молча (спасибо, 769)', 'как учил тренер Рустам', 'в костюмах улитки'];
+  var callC = ['и встречаемся на спавне', 'и забываем, зачем вышли', 'и это работает (нет)', 'и все возвращаются с арбузом', 'и это сработает. впервые.', 'и выигрываем раунд (записать видео!)', 'и бомба всё равно тикает', 'и соседи аплодируют'];
+  function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+  function reflow(el){ el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; }
+  if (callBtn) callBtn.addEventListener('click', function(){
+    reflow(callOut);
+    callOut.textContent = pick(callA) + ' ' + pick(callB) + ', ' + pick(callC) + '!';
+    tone(500, 0.06, 'triangle', 0.06);
+  });
+
+  /* ---------- АРКАДА: ГЕНЕРАТОР НИКА ---------- */
+  var nickBtn = $('#nick-btn'), nickOut = $('#nick-out');
+  var nickA = ['Арбуз', 'Пупок', 'Слизень', 'Дым', 'Курятник', 'Флешка', 'Смок', 'Улитка', 'Клатч', 'Тапок'];
+  var nickB = ['-миллионник', ' 3000', 'ушастый', '-промах', ' с горячим сердцем', ' XxX', '-повелитель', '-сеньор', ' 99 LVL', ' (скромный)'];
+  if (nickBtn) nickBtn.addEventListener('click', function(){
+    reflow(nickOut);
+    nickOut.textContent = 'Твой ник: ' + pick(nickA) + pick(nickB);
+    tone(700, 0.06, 'triangle', 0.06, 880);
+  });
+
+  /* ---------- КОД KONAMI: РЕЖИМ ЧИТЕРА ---------- */
+  var konamiSeq = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+  var konamiPos = 0;
+  document.addEventListener('keydown', function(e){
+    if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
+    var k = (e.key || '').toLowerCase();
+    if (k === 'и') k = 'b';
+    if (k === 'ф') k = 'a';
+    if (k === konamiSeq[konamiPos]){
+      konamiPos++;
+      if (konamiPos === konamiSeq.length){
+        konamiPos = 0;
+        document.body.classList.add('cheater');
+        toast('🎮 РЕЖИМ ЧИТЕРА: ВСЕ ГОЛОВЫ ВЫРОСЛИ. 6 СЕКУНД ЧИТЕРСТВА.', 5000);
+        sfx.win();
+        floaterBurst(10);
+        setTimeout(function(){ document.body.classList.remove('cheater'); }, 6000);
+      }
+    } else {
+      konamiPos = (k === konamiSeq[0]) ? 1 : 0;
+    }
+  });
 
 })();
 </script>
